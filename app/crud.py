@@ -1,7 +1,7 @@
-from sqlalchemy import or_
-from models import Task
 import schemas
 from database import session_scope
+from models import Task
+from sqlalchemy import or_
 
 
 def create_task(task: schemas.TaskCreate):

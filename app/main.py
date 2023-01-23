@@ -1,10 +1,11 @@
-from fastapi import FastAPI, APIRouter, HTTPException
-import schemas
-import logic
-from database import engine
-import models
 from http import HTTPStatus
 from typing import List, Union
+
+import logic
+import models
+import schemas
+from database import engine
+from fastapi import APIRouter, FastAPI, HTTPException
 
 models.Base.metadata.create_all(bind=engine)
 app = FastAPI()
