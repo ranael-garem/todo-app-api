@@ -1,0 +1,8 @@
+version: '2'
+services: 
+  app:
+    environment:
+      - SQLALCHEMY_SILENCE_UBER_WARNING=1
+    build: .
+    ports:
+      - 80:80
