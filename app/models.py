@@ -1,6 +1,7 @@
-from database import Base
-from helpers import utc_datetime
 from sqlalchemy import Boolean, Column, DateTime, Integer, String
+
+from app.database import Base
+from app.helpers import utc_datetime
 
 
 class Task(Base):

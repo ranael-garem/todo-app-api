@@ -1,11 +1,10 @@
 from http import HTTPStatus
 from typing import List, Union
 
-import logic
-import models
-import schemas
-from database import engine
 from fastapi import APIRouter, FastAPI, HTTPException
+
+from . import logic, models, schemas
+from .database import Base, engine
 
 models.Base.metadata.create_all(bind=engine)
 app = FastAPI()
@@ -13,18 +12,18 @@ task_router = APIRouter()
 
 
 @task_router.post(
-    "/tasks/", status_code=HTTPStatus.CREATED, response_model=schemas.Task
+    "/tasks/", status_code=HTTPStatus.CREATED, response_model=schemas.TaskSchema
 )
 async def create_task(task: schemas.TaskCreate):
     return logic.create_task(task)
 
 
-@task_router.get("/tasks/", response_model=List[schemas.Task])
+@task_router.get("/tasks/", response_model=List[schemas.TaskSchema])
 async def list_tasks(search_term: Union[str, None] = None):
     return logic.list_tasks(search_term)
 
 
-@task_router.get("/tasks/{task_id}", response_model=schemas.Task)
+@task_router.get("/tasks/{task_id}", response_model=schemas.TaskSchema)
 async def retrieve_task(task_id: int):
     task = logic.retrieve_task(task_id)
     if not task:
@@ -40,7 +39,7 @@ async def delete_task(task_id: int):
     return ""
 
 
-@task_router.patch("/tasks/{task_id}", response_model=schemas.Task)
+@task_router.patch("/tasks/{task_id}", response_model=schemas.TaskSchema)
 async def update_task(task_id: int, task_params: schemas.TaskUpdate):
     task = logic.update_task(task_id, task_params)
     if not task:
@@ -48,7 +47,7 @@ async def update_task(task_id: int, task_params: schemas.TaskUpdate):
     return task
 
 
-@task_router.post("/tasks/{task_id}/complete", response_model=schemas.Task)
+@task_router.post("/tasks/{task_id}/complete", response_model=schemas.TaskSchema)
 async def toggle_complete(task_id: int):
     task = logic.toggle_complete(task_id)
     if not task:

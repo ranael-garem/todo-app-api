@@ -22,7 +22,7 @@ class TaskList:
     search_term: Union[str, None] = None
 
 
-class Task(TaskBase):
+class TaskSchema(TaskBase):
     id: int
     completed: bool
     deleted: bool

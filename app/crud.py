@@ -1,8 +1,10 @@
-from database import session_scope
-from models import Task
-from schemas import Task as TaskSchema, TaskCreate
+from typing import List, Union
+
 from sqlalchemy import or_
-from typing import Union, List
+
+from app.database import session_scope
+from app.models import Task
+from app.schemas import TaskCreate, TaskSchema
 
 
 def create_task(task: TaskCreate) -> TaskSchema:
