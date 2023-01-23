@@ -1,10 +1,11 @@
-import schemas
 from database import session_scope
 from models import Task
+from schemas import Task as TaskSchema, TaskCreate
 from sqlalchemy import or_
+from typing import Union, List
 
 
-def create_task(task: schemas.TaskCreate):
+def create_task(task: TaskCreate) -> TaskSchema:
     with session_scope() as db:
         db_task = Task(**task.dict())
         db.add(db_task)
@@ -13,12 +14,12 @@ def create_task(task: schemas.TaskCreate):
         return db_task
 
 
-def retrieve_task(task_id: int) -> Task:
+def retrieve_task(task_id: int) -> Union[TaskSchema, None]:
     with session_scope() as db:
         return db.query(Task).filter(Task.id == task_id, Task.deleted == False).first()
 
 
-def save_task(task: Task) -> Task:
+def save_task(task: TaskSchema) -> TaskSchema:
     with session_scope() as db:
         db.add(task)
         db.commit()
@@ -26,17 +27,20 @@ def save_task(task: Task) -> Task:
         return task
 
 
-def list_tasks():
+def list_tasks() -> Union[List[TaskSchema], None]:
     with session_scope() as db:
         return db.query(Task).all()
 
 
-def filter_tasks(looking_for: str):
+def filter_tasks(looking_for: str) -> Union[List[TaskSchema], None]:
     with session_scope() as db:
         return (
             db.query(Task)
             .filter(
-                or_(Task.title.like(looking_for), Task.description.like(looking_for))
+                or_(
+                    Task.title.like(looking_for),
+                    Task.description.like(looking_for),
+                )
             )
             .all()
         )

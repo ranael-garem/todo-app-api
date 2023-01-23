@@ -9,15 +9,15 @@ from helpers import utc_datetime
 from schemas import Task, TaskCreate, TaskUpdate
 
 
-def create_task(task: TaskCreate):
+def create_task(task: TaskCreate) -> Task:
     return create_task_db(task=task)
 
 
-def retrieve_task(task_id: int):
+def retrieve_task(task_id: int) -> Union[Task, None]:
     return retrieve_task_db(task_id=task_id)
 
 
-def delete_task(task_id: int):
+def delete_task(task_id: int) -> bool:
     task = retrieve_task(task_id)
     if not task:
         return False
@@ -30,7 +30,7 @@ def delete_task(task_id: int):
     return True
 
 
-def update_task(task_id: int, params: TaskUpdate) -> Task:
+def update_task(task_id: int, params: TaskUpdate) -> Union[Task, None]:
     task = retrieve_task(task_id)
     if not task:
         return None
@@ -43,7 +43,7 @@ def update_task(task_id: int, params: TaskUpdate) -> Task:
     return task
 
 
-def list_tasks(search_term: Union[str, None] = None) -> List[Task]:
+def list_tasks(search_term: Union[str, None] = None) -> Union[List[Task], None]:
     if search_term:
         search_terms_list = search_term.split(" ")
         looking_for = "%"
@@ -53,7 +53,7 @@ def list_tasks(search_term: Union[str, None] = None) -> List[Task]:
     return list_tasks_db()
 
 
-def toggle_complete(task_id: int) -> Task:
+def toggle_complete(task_id: int) -> Union[Task, None]:
     task = retrieve_task(task_id)
     if not task:
         return None

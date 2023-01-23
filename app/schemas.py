@@ -13,7 +13,7 @@ class TaskCreate(TaskBase):
     pass
 
 
-class TaskUpdate(TaskBase):
+class TaskUpdate(BaseModel):
     title: Union[str, None] = Field(min_length=1)
     description: Union[str, None] = None
 
@@ -28,7 +28,7 @@ class Task(TaskBase):
     deleted: bool
     created_at: datetime
     updated_at: datetime
-    deleted_at: datetime = None
+    deleted_at: Union[datetime, None] = None
 
     class Config:
         orm_mode = True
